@@ -33,6 +33,9 @@ section .bss
 section .text
 global _start
 _start:
+   jmp InputB
+
+InputB:
     ;; вывовдим сообщение ib
     mov eax, 4
     mov ebx, 1
@@ -52,7 +55,9 @@ _start:
     call StrToInt
     cmp EBX, 0
     mov [B], ax
+    jmp InputC
 
+InputC:
     ;; вывовдим сообщение ic
     mov eax, 4
     mov ebx, 1
@@ -72,7 +77,9 @@ _start:
     call StrToInt
     cmp EBX, 0
     mov [C], ax
+   jmp InputD
 
+InputD:
     ;; вывовдим сообщение id
     mov eax, 4
     mov ebx, 1
@@ -92,7 +99,9 @@ _start:
     call StrToInt
     cmp EBX, 0
     mov [D], ax
+    jmp Calc
 
+Calc:	
     ;;записываем значения переменных в регистры
     mov bx, [B]
     mov ax, [C]
@@ -112,7 +121,9 @@ _start:
     shl edx, 16
     or eax, edx
     mov [A], ax
+    jmp Output
 
+Output:	
     ;;конвертирум  из A в строку
     mov esi, outbuf
     mov ax, [A]
@@ -129,7 +140,9 @@ _start:
     mov ecx, outbuf
     mov edx, lenout
     int 0x80
+    jmp Exit
 
+Exit:	
     mov eax, 1
     xor ebx, ebx
     int 0x80
