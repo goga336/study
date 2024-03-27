@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+
+using namespace std;
+
+// Функция для генерации случайной буквы латинского алфавита
+char generateRandomLetter() {
+    return 'a' + rand() % 26;
+}
+
+// Функция для генерации случайного слова заданной длины
+string generateRandomWord(int length) {
+    string word;
+    for (int i = 0; i < length; ++i) {
+        word += generateRandomLetter();
+    }
+    return word;
+}
+
+int main() {
+    srand(time(nullptr)); // инициализация генератора случайных чисел
+
+    int wordCount = 10; // количество слов в строке
+    string randomString;
+
+    for (int i = 0; i < wordCount; ++i) {
+        int wordLength = rand() % 10 + 1; // длина слова от 1 до 10 символов
+        randomString += generateRandomWord(wordLength) + " ";
+    }
+
+    cout << "Сгенерированная строка: " << randomString << endl;
+
+    return 0;
+}

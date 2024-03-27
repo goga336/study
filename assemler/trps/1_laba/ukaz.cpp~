@@ -1,7 +1,0 @@
-#include <iostream>
-
-
-int main(){
-  int * ptr = 5;
-  std::cout<<*ptr;
-}
