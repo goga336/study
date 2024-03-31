@@ -68,7 +68,7 @@ IntToStr:
 		 push   esi
          lea    esi,[esi+edi] ; ������ ����������
 		 pop    edi
-	;; rep movsb		
+         rep movsb
          pop    esi  
          pop    ecx
          pop    edx

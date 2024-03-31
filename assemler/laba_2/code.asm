@@ -1,10 +1,10 @@
 %include "lib.asm"
  
 section .data
-    ib db "Enter B: ", 0
-    ic db "Enter C: ", 0
-    id db "Enter D: ", 0
-    ia db "Your result: ", 0
+    ib db "Enter B: ", 10
+    ic db "Enter C: ", 10
+    id db "Enter D: ", 10
+    ia db "Your result: ", 10
 
 section .bss
     msgB resb 10
@@ -25,7 +25,7 @@ section .bss
     outbuf resb 10
     lenout equ $-outbuf
     
-    A resw 1
+    A resd 1
     B resd 1
     C resd 1
     D resd 1
@@ -54,7 +54,7 @@ InputB:
     mov esi, inbuf
     call StrToInt
     cmp EBX, 0
-    mov [B], ax
+    mov [B], eax
     jmp InputC
 
 InputC:
@@ -76,7 +76,7 @@ InputC:
     mov esi, inbuf
     call StrToInt
     cmp EBX, 0
-    mov [C], ax
+    mov [C], eax
    jmp InputD
 
 InputD:
@@ -98,42 +98,52 @@ InputD:
     mov esi, inbuf
     call StrToInt
     cmp EBX, 0
-    mov [D], ax
+    mov [D], eax
     jmp Calc
 
-Calc:	
-    ;;записываем значения переменных в регистры
-    mov bx, [B]
-    mov ax, [C]
-    mov dx, [D]
+Calc:
+	mov ebx, [B]
+	
+	mov eax, [C]		
+	mov edx, [D]
 
-    xor ecx, ecx
-    mov cx, ax
-    sub cx, 5
-    imul cx, dx
-    add cx, bx
-    mov ax, cx
-    imul bx, bx
-    add bx, 1
+	xor ecx, ecx
+	mov ecx, [C]
+	sub ecx, 5
+	mov eax, ecx
+	
 
-    xor edx, edx
-    div bx
-    shl edx, 16
-    or eax, edx
-    mov [A], ax
+	imul edx
+	add eax, ebx
+	xor ecx, ecx
+	mov ecx, eax
+	mov eax, ebx
+	imul ebx
+	add eax, 1
+	mov ebx, eax
+mov eax, ecx
+	cdq
+    idiv ebx
+    
+
+    mov [A], eax
     jmp Output
 
-Output:	
-    ;;конвертирум  из A в строку
-    mov esi, outbuf
-    mov ax, [A]
-    call IntToStr
 
+Output:	
     mov eax, 4
     mov ebx, 1
     mov ecx, ia
     mov edx, lenMsgA
     int 0x80
+
+    ;;конвертирум  из A в строку
+    mov esi, outbuf
+	cwde
+    mov eax, [A]
+    call IntToStr
+
+
     ;; выводим результат
     mov eax, 4
     mov ebx, 1
