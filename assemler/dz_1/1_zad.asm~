@@ -1,0 +1,16 @@
+section .stack 100h
+section .data
+    id db 41h
+section .bss
+    outbuf resb 10
+    lenout equ $-outbuf
+section .text
+    global _start
+
+_start:
+    mov dl, [id]    ; Загружаем значение id (ASCII код 'A') в dl
+    mov ah, 02h     ; Функция DOS для вывода символа
+    int 21h         ; Вызываем прерывание для вывода символа
+
+    mov ah, 4Ch     ; Функция DOS для завершения программы
+    int 21h         ; Вызываем прерывание для завершения программы

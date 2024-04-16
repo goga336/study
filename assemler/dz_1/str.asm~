@@ -1,0 +1,49 @@
+
+section .data
+    mas dd 1, 3, 4, 5
+	dd 3, 5, 6, 8
+	dd 5, 8, 4, 1
+	dd 6, 7, 1, 2
+	count dd 0
+section .bss
+	resg resd 4
+    outbuf resb 10
+    lenout equ $-outbuf
+section .text
+    global _start
+
+_start:	
+	mov eax, 5
+	cwde
+	mov ecx, 3
+	idiv ecx
+	cmp edx, 0
+	jnz plus
+	mov eax, 5
+	add eax, ecx
+plus:	
+	mov ebx, 0
+	mov ecx, 4
+	mov edx, 4
+	
+	
+cycle:	
+	push ecx
+	mov ecx, 4
+
+.cycle:
+	mov eax, [mas + ebx*4]
+	push ebx
+	mov ebx, [count]
+	mov [resg + ebx*4], eax
+	inc ebx
+	mov [count], ebx
+	pop ebx
+	
+	add ebx, 5
+	loop .cycle
+	pop ecx
+	loop cycle
+	mov eax, 1
+	xor ebx, ebx
+	int 0x80
